@@ -2,7 +2,7 @@
 {
     public class Like : BaseEntity
     {
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public virtual ApplicationUser User { get; set; }
 
         public Guid CatId { get; set; }
