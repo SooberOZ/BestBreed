@@ -1,1 +1,2 @@
-# BestBreed
+# Best Breed
+Hi and so, this is my Best Breed application, although the name is still in development😅, but not the essence, the essence of the application is for the user to complete a small survey that would help him choose the ideal breed for himself, after completing a short survey the user will be offered several breeds cats with photographs that could help him decide, the site will also have profiles and a system of comments and likes
