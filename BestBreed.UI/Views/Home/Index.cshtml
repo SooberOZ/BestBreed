@@ -3,6 +3,28 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome to the BestBreed App!</h1>
+    <p>Choose an option below:</p>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Take the Breed Quiz</h5>
+                    <p class="card-text">Find the best cat breed for you by taking our quiz.</p>
+                    <a href="@Url.Action("Index", "Quiz")" class="btn btn-primary">Start Quiz</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Explore Cat Breeds</h5>
+                    <p class="card-text">Browse through various cat breeds and learn more about them.</p>
+                    <a href="@Url.Action("Index", "Cat")" class="btn btn-primary">Explore Breeds</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

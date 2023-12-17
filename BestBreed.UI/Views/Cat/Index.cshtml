@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Available Cats";
+    Layout = "_Layout";
+}
+
+<h2>Available Cats</h2>
+
+<ul>
+    @foreach (var cat in Model)
+    {
+        <li>
+            <a asp-action="Details" asp-route-id="@cat.Id">@cat.Breed</a>
+        </li>
+    }
+</ul>

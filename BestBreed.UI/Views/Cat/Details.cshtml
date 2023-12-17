@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = Model.Breed;
+    Layout = "_Layout";
+}
+
+<h2>@Model.Breed</h2>
+<p>@Model.Description</p>
+<p>
+    <img src="@Model.PhotoPath" alt="Cat Photo">
+</p>
+
+<button class="likeButton" data-cat-id="@Model.Id">Like</button>
+
+<div class="commentBlock" data-cat-id="@Model.Id">
+    <p>Комментарий: @Model.Comments.FirstOrDefault()?.Text</p>
+</div>
+
+<form id="commentForm">
+    <label for="commentText">Добавить комментарий:</label>
+    <input type="text" id="commentText" name="commentText">
+    <button type="submit">Отправить</button>
+</form>
