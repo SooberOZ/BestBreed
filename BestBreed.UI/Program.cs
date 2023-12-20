@@ -1,7 +1,8 @@
+using BestBreed.BusinessLogic;
 using BestBreed.Contracts;
 using BestBreed.DataLayer;
-using BestBreed.DataLayer.Entities;
 using BestBreed.DataLayer.Repository;
+using BestBreed.DataLayer.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 
 namespace BestBreed.UI
@@ -14,7 +15,9 @@ namespace BestBreed.UI
 
             // Add services to the container.
             builder.Services.AddDbContext<BestBreedContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
-            builder.Services.AddScoped<IRepository<Cat>, BaseRepository<Cat>>();
+            builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+            builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+            builder.Services.AddAutoMapper(typeof(MappingProfiles));
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
