@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BestBreed.DataLayer.Migrations
 {
     [DbContext(typeof(BestBreedContext))]
-    [Migration("20231214172700_Initial")]
+    [Migration("20231226175105_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -164,6 +164,13 @@ namespace BestBreed.DataLayer.Migrations
 
                     b.Property<Guid>("CatId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsSurveyCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("QuestionAnswers")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");

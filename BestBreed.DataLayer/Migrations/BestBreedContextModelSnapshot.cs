@@ -162,6 +162,13 @@ namespace BestBreed.DataLayer.Migrations
                     b.Property<Guid>("CatId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<bool>("IsSurveyCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("QuestionAnswers")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 

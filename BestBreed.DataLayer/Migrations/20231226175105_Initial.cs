@@ -109,6 +109,8 @@ namespace BestBreed.DataLayer.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    QuestionAnswers = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsSurveyCompleted = table.Column<bool>(type: "bit", nullable: false),
                     CatId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
