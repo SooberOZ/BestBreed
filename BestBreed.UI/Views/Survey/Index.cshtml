@@ -1,0 +1,24 @@
+﻿@model List<QuestionAnswerViewModel>
+
+<h1>Опрос</h1>
+
+<form method="post" action="/Survey/Submit">
+    @foreach (var questionAnswer in Model)
+    {
+        <div>
+            <h3>Вопрос @questionAnswer.QuestionNumber:</h3>
+            <p>@questionAnswer.QuestionText</p>
+            <ul>
+                @for (var i = 0; i < questionAnswer.PossibleAnswers.Count; i++)
+                {
+                    <li>
+                        <input type="radio" name="Question@(questionAnswer.QuestionNumber)" value="@i" @(i == questionAnswer.SelectedAnswer ? "checked" : "") />
+                        <label>@questionAnswer.PossibleAnswers[i]</label>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    <button type="submit">Отправить</button>
+</form>
