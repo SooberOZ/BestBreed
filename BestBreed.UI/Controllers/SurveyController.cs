@@ -1,5 +1,6 @@
 ﻿using BestBreed.UI.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace BestBreed.UI.Controllers
 {
@@ -14,20 +15,15 @@ namespace BestBreed.UI.Controllers
             return View(questionAnswers);
         }
 
-        private List<QuestionAnswerViewModel> GetQuestionAnswers()
+        public List<QuestionAnswerViewModel> GetQuestionAnswers()
         {
-            List<QuestionAnswerViewModel> questionAnswers = new List<QuestionAnswerViewModel>
-        {
-            new QuestionAnswerViewModel
-            {
-                QuestionNumber = 1,
-                QuestionText = "Какая характеристика важнее для вас?",
-                PossibleAnswers = new List<string> { "Внешний вид", "Характер", "Размер", "Уход" },
-                SelectedAnswer = 0
-            },
-        };
 
-            return questionAnswers;
+             string jsonContent = System.IO.File.ReadAllText("D:\\Visual Studio\\BestBreed\\BestBreed\\BestBreed.UI\\Questions\\Questions.json");
+
+             List<QuestionAnswerViewModel> questionAnswers = JsonConvert.DeserializeObject<List<QuestionAnswerViewModel>>(jsonContent);
+
+             return questionAnswers;
+
         }
     }
 }

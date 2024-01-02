@@ -4,9 +4,11 @@ namespace BestBreed.BusinessLogic.Interface
 {
     public interface ISurveyService
     {
-        Task StartSurveyAsync(Guid userId, Guid catId);
+        List<SurveyQuestionModel> LoadSurveyQuestionsFromJson(string jsonFilePath);
+        Task StartSurveyAsync(Guid userId);
         Task<SurveyResultDto> GetSurveyResultByIdAsync(Guid surveyResultId);
-        Task<List<SurveyResultDto>> GetSurveyQuestionsAsync();
-        Task<SurveyResultDto> ProcessSurveyResultsAsync(UserSurveyAnswer userSurveyAnswer);
+        Task<List<SurveyResultDto>> GetSurveyQuestionsAsync(Guid userId);
+        Task<SurveyResultDto> ProcessSurveyResultsAsync(SurveyResultDto userSurveyResult);
+        Task SaveSurveyResultAsync(SurveyResultDto surveyResultDto);
     }
 }

@@ -1,6 +1,8 @@
-﻿using BestBreed.BusinessLogic;
+﻿using BestBreed.BusinessLogic.DtoModels;
 using BestBreed.BusinessLogic.Interface;
+using BestBreed.DataLayer.Entities;
 using BestBreed.UI.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BestBreed.UI.Controllers
@@ -8,44 +10,44 @@ namespace BestBreed.UI.Controllers
     public class QuizController : Controller
     {
         private readonly ISurveyService _surveyService;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SurveyController _surveyController;
 
-        public QuizController(ISurveyService surveyService)
+        public QuizController(ISurveyService surveyService, UserManager<ApplicationUser> userManager, SurveyController surveyController)
         {
             _surveyService = surveyService;
+            _userManager = userManager;
+            _surveyController = surveyController;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            // Загружаем вопросы для опроса
-            var questions = _surveyService.GetSurveyQuestions();
-            var viewModel = new SurveyViewModel { Questions = questions };
-            return View(viewModel);
+            var questions = _surveyController.GetQuestionAnswers();
+            return View(questions);
         }
 
         [HttpPost]
-        public async Task<IActionResult> SubmitSurvey(SurveyViewModel viewModel)
+        public async Task<IActionResult> SubmitSurvey(List<QuestionAnswerViewModel> viewModel)
         {
             if (ModelState.IsValid)
             {
-                // Обработка ответов пользователя
-                var surveyResult = _surveyService.ProcessSurveyResults(viewModel.Answers);
+                var user = await _userManager.GetUserAsync(User);
 
-                // Сохраняем результат опроса в базу данных
-                await _surveyService.SaveSurveyResult(surveyResult);
+                // Тут добавьте логику для обработки ответов пользователя
 
-                // Перенаправляем пользователя на страницу с результатами
-                return RedirectToAction("SurveyResult", new { surveyResultId = surveyResult.Id });
+                // Ваш код ...
+
+                return RedirectToAction("SurveyResult", new { /* ... */ });
             }
 
-            // Если модель недействительна, возвращаем пользователя на страницу опроса
             return View("Index", viewModel);
         }
 
-        public IActionResult SurveyResult(Guid surveyResultId)
+
+        public async Task<IActionResult> SurveyResult(Guid surveyResultId)
         {
-            // Загружаем результат опроса для отображения
-            var surveyResultDto = _surveyService.GetSurveyResultByIdAsync(surveyResultId);
-            var surveyResultViewModel = new SurveyResultViewModel { SurveyResult = surveyResultDto };
+            var surveyResultDto = await _surveyService.GetSurveyResultByIdAsync(surveyResultId);
+            var surveyResultViewModel = new SurveyViewModel { SurveyResult = surveyResultDto };
 
             return View(surveyResultViewModel);
         }

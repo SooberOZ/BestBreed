@@ -2,7 +2,9 @@
 using BestBreed.BusinessLogic.DtoModels;
 using BestBreed.BusinessLogic.Interface;
 using BestBreed.Contracts;
+using BestBreed.DataLayer;
 using BestBreed.DataLayer.Entities;
+using Newtonsoft.Json;
 
 namespace BestBreed.BusinessLogic
 {
@@ -10,34 +12,55 @@ namespace BestBreed.BusinessLogic
     {
         private readonly IRepository<SurveyResult> _surveyResultRepository;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork<BestBreedContext> _unitOfWork;
 
-        public SurveyService(IRepository<SurveyResult> surveyResultRepository, IMapper mapper)
+        public SurveyService(
+            IRepository<SurveyResult> surveyResultRepository,
+            IMapper mapper,
+            IUnitOfWork<BestBreedContext> unitOfWork)
         {
             _surveyResultRepository = surveyResultRepository;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
+        }
+        public List<SurveyQuestionModel> LoadSurveyQuestionsFromJson(string jsonFilePath)
+        {
+            var json = File.ReadAllText(jsonFilePath);
+            return JsonConvert.DeserializeObject<List<SurveyQuestionModel>>(json);
         }
 
-        public async Task StartSurveyAsync(Guid userId, Guid catId)
+        public async Task StartSurveyAsync(Guid userId)
         {
+            var questions = await GetSurveyQuestionsAsync(userId);
+
             var surveyResult = new SurveyResult
             {
                 UserId = userId,
-                CatId = catId,
-                IsSurveyCompleted = false
+                IsSurveyCompleted = false,
+                QuestionAnswers = questions.First().QuestionAnswers
             };
 
-            await AskQuestionAsync("Какой цвет вам нравится больше всего?", surveyResult);
-            await AskQuestionAsync("Какой характер у вас?", surveyResult);
-
-            surveyResult.IsSurveyCompleted = true;
-
             await _surveyResultRepository.AddAsync(surveyResult);
+
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task<List<SurveyResultDto>> GetSurveyQuestionsAsync(Guid userId)
+        {
+            return await GetSurveyQuestionsAsync(userId);
         }
 
         public async Task<SurveyResultDto> GetSurveyResultByIdAsync(Guid surveyResultId)
         {
             var surveyResultEntity = await _surveyResultRepository.GetByIdAsync(surveyResultId);
             return _mapper.Map<SurveyResultDto>(surveyResultEntity);
+        }
+
+        public async Task<SurveyResultDto> ProcessSurveyResultsAsync(SurveyResultDto userSurveyResult)
+        {
+            //TODO: сделать логику 
+
+            return userSurveyResult;
         }
 
         private async Task AskQuestionAsync(string questionText, SurveyResult surveyResult)
@@ -58,5 +81,15 @@ namespace BestBreed.BusinessLogic
 
             return selectedAnswer;
         }
+
+        public async Task SaveSurveyResultAsync(SurveyResultDto surveyResultDto)
+        {
+            var surveyResultEntity = _mapper.Map<SurveyResult>(surveyResultDto);
+
+            await _surveyResultRepository.AddAsync(surveyResultEntity);
+
+            await _unitOfWork.SaveChangesAsync();
+        }
     }
+
 }

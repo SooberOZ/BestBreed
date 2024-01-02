@@ -1,9 +1,13 @@
 using BestBreed.BusinessLogic;
+using BestBreed.BusinessLogic.Interface;
 using BestBreed.Contracts;
 using BestBreed.DataLayer;
+using BestBreed.DataLayer.Entities;
 using BestBreed.DataLayer.Repository;
 using BestBreed.DataLayer.UnitOfWork;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BestBreed.UI
 {
@@ -18,6 +22,15 @@ namespace BestBreed.UI
             builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             builder.Services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
             builder.Services.AddAutoMapper(typeof(MappingProfiles));
+            builder.Services.AddScoped<ISurveyService, SurveyService>();
+
+            //builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            //{
+            //    options.SignIn.RequireConfirmedAccount = true;
+            //})
+            //                .AddEntityFrameworkStores<BestBreedContext>()
+            //                .AddDefaultTokenProviders();
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();

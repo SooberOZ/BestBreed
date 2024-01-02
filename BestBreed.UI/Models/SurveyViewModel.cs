@@ -6,5 +6,6 @@ namespace BestBreed.UI.Models
     {
         public List<SurveyResultDto> Questions { get; set; }
         public Dictionary<int, int> Answers { get; set; }
+        public SurveyResultDto SurveyResult { get; set; }
     }
 }

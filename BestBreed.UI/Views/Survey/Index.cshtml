@@ -8,15 +8,23 @@
         <div>
             <h3>Вопрос @questionAnswer.QuestionNumber:</h3>
             <p>@questionAnswer.QuestionText</p>
-            <ul>
-                @for (var i = 0; i < questionAnswer.PossibleAnswers.Count; i++)
-                {
-                    <li>
-                        <input type="radio" name="Question@(questionAnswer.QuestionNumber)" value="@i" @(i == questionAnswer.SelectedAnswer ? "checked" : "") />
-                        <label>@questionAnswer.PossibleAnswers[i]</label>
-                    </li>
-                }
-            </ul>
+
+            @if (questionAnswer.PossibleAnswers != null)
+            {
+                <ul>
+                    @for (var i = 0; i < questionAnswer.PossibleAnswers.Count; i++)
+                    {
+                        <li>
+                            <input type="radio" name="Question@(questionAnswer.QuestionNumber)" value="@i" @(i == questionAnswer.SelectedAnswer ? "checked" : "") />
+                            <label>@questionAnswer.PossibleAnswers[i]</label>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No possible answers available for this question.</p>
+            }
         </div>
     }
 
